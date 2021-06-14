@@ -39,7 +39,8 @@ class ProductTest extends TestCase
     public function test_show()
     {
         $product = factory(Product::class)->create();
-        $response = $this->getJson('/api/products/3');
+
+        $response = $this->getJson("/api/products/{$product->getKey()}");
 
         $response->assertSuccessful();
         $response->assertHeader('content-type', 'application/json');
@@ -56,7 +57,7 @@ class ProductTest extends TestCase
             'price' => 20.00
         ];
 
-        $response = $this->putJson('/api/products/3', $data);
+        $response = $this->putJson("/api/products/{$product->getKey()}", $data);
 
         $response->assertSuccessful();
         $response->assertHeader('content-type', 'application/json');
@@ -66,8 +67,7 @@ class ProductTest extends TestCase
     public function test_destroy()
     {
         $product = factory(Product::class)->create();
-        $product->id = 1;
-        $response = $this->deleteJson('/api/products/3');
+        $response = $this->deleteJson("/api/products/{$product->getKey()}");
 
         $response->assertSuccessful();
         $response->assertHeader('content-type', 'application/json');
